@@ -1,14 +1,19 @@
     scalar DateTime
     
-    interface BadeModel{
+    type Query {
+        users(skip:Int, take:Int, where: UserWhereInput): [User]!
+        user(email:String): User
+    }
+
+    interface BaseModel{
         createdAt: DateTime!
     }
 
     type User {
         id: ID!
         email: String
-        emailVerified: Date
-        termsAndConditionsAccepted: Date
+        emailVerified: DateTime
+        termsAndConditionsAccepted: DateTime
         name: String!
         image: String
         position: String
@@ -22,6 +27,5 @@
         usage: Int
         description: String
         userId: String
-        createdAt: DateTime
-        attributes: Attributes!
+        createdAt: DateTime!
     }
