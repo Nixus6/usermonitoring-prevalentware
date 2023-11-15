@@ -1,31 +1,49 @@
-    scalar DateTime
-    
-    type Query {
-        users(skip:Int, take:Int, where: UserWhereInput): [User]!
-        user(email:String): User
-    }
+scalar DateTime
 
-    interface BaseModel{
-        createdAt: DateTime!
-    }
+type Query {
+  users(skip: Int, take: Int, where: UserWhereInput): [User]!
+  # (skip: Int, take: Int, where: UserWhereInput)
+  # user(email:String): User
+}
 
-    type User {
-        id: ID!
-        email: String
-        emailVerified: DateTime
-        termsAndConditionsAccepted: DateTime
-        name: String!
-        image: String
-        position: String
-        createdAt: DateTime
-        updatedAt: DateTime!
-        roleId: String
-    }
+interface BaseModel {
+  createdAt: DateTime!
+}
 
-    type UserMonitoring implements BaseModel{
-        id: String
-        usage: Int
-        description: String
-        userId: String
-        createdAt: DateTime!
-    }
+type User {
+  id: ID!
+  email: String
+  emailVerified: DateTime
+  termsAndConditionsAccepted: DateTime
+  name: String!
+  image: String
+  position: String
+  createdAt: DateTime
+  updatedAt: DateTime!
+  roleId: String
+}
+
+type UserMonitoring implements BaseModel {
+  id: String
+  usage: Int
+  description: String
+  userId: String
+  createdAt: DateTime!
+}
+input UserWhereInput {
+  name: StringFilterInput
+}
+
+input StringFilterInput {
+  equals: String
+  in: [String]
+  notIn: [String]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+}

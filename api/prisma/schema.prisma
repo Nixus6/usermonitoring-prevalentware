@@ -1,75 +1,69 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
+// generator migrate {
+//   provider = "prisma-migrate-js"
+//   output   = "./prisma/migrations"
+// }
+
 datasource db {
-  // provider = "postgresql"
-  // url      = env("DATABASE_URL")
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-// Definition of the data model Role
-model Role {
-  id        String   @id @unique
+model Country {
+  id        String   @id
   name      String
   createdAt DateTime @default(now())
+  updatedAt DateTime
+  user      User[]   @relation("CountryToUser")
 }
 
-// Definition of the data model User
-model User {
-  id                         String           @id @unique
-  email                      String
-  emailVerified              DateTime
-  termsAndConditionsAccepted DateTime
-  name                       String
-  image                      String
-  position                   String
-  createdAt                  DateTime?        @default(now())
-  updatedAt                  DateTime?        @updatedAt
-  roleId                     String
-  UserMonitoring             UserMonitoring[]
-  Session                    Session[]
-  CountryToUser              CountryToUser[]
+model Role {
+  id        String        @id
+  name      Enum_RoleName
+  createdAt DateTime      @default(now())
+  user      User[]
 }
 
-// Definition of the data model UserMonitoring
-model UserMonitoring {
-  id          String    @id @unique
-  usage       Int
-  description String
-  createdAt   DateTime? @default(now())
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
-}
-
-// Definition of the data model Country
-model Country {
-  id            String          @id @unique
-  name          String
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime?       @updatedAt
-  CountryToUser CountryToUser[]
-}
-
-// Definition of the data model Session
 model Session {
-  id           Int      @id @default(autoincrement())
-  sessionToken String
+  id           String   @id
+  sessionToken String   @unique
+  userId       String
   expiresAt    DateTime
   createdAt    DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id])
-  userId       String
 }
 
-// Definition of the data model Session
-model CountryToUser {
-  id        String  @id @unique
-  country   Country @relation(fields: [countryId], references: [id])
-  countryId String
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String
+model User {
+  id                         String           @id
+  email                      String           @unique
+  emailVerified              DateTime?
+  termsAndConditionsAccepted DateTime?
+  name                       String?
+  image                      String?
+  position                   String?
+  createdAt                  DateTime         @default(now())
+  updatedAt                  DateTime
+  roleId                     String?
+  session                    Session[]
+  role                       Role?            @relation(fields: [roleId], references: [id])
+  userMonitoring             UserMonitoring[]
+  country                    Country[]        @relation("CountryToUser")
+}
+
+model UserMonitoring {
+  id          String   @id
+  usage       Int
+  description String
+  userId      String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+enum Enum_RoleName {
+  Admin
+  Manager
+  User
 }
