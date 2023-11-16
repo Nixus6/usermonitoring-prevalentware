@@ -12,13 +12,11 @@ const typeDefs = readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8')
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context:
-    {
-        orm
-    }
-        // ({ req }) => {
-            // console.log('req user ', req.user);
-            // return { orm, user: req.user }
+    context: ({ req }) =>
+    ({
+        orm, user: req.headers['authorization']
+    }),
+
 })
 
 server.listen().then(({ url }) => console.log(`server is running on ${url}`));

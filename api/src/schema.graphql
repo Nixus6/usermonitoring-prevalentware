@@ -2,15 +2,16 @@ scalar DateTime
 
 type Query {
   users(skip: Int, take: Int, where: UserWhereInput): [User]!
-  # (skip: Int, take: Int, where: UserWhereInput)
-  # user(email:String): User
+  user(email: String): User
+  countries(skip: Int, take: Int, where: CountryWhereInput): [Country]
 }
 
 interface BaseModel {
+  id: ID!
   createdAt: DateTime!
 }
 
-type User {
+type User implements BaseModel {
   id: ID!
   email: String
   emailVerified: DateTime
@@ -18,19 +19,31 @@ type User {
   name: String!
   image: String
   position: String
-  createdAt: DateTime
+  createdAt: DateTime!
   updatedAt: DateTime!
   roleId: String
 }
 
 type UserMonitoring implements BaseModel {
-  id: String
+  id: ID!
   usage: Int
   description: String
   userId: String
   createdAt: DateTime!
 }
+
+type Country implements BaseModel {
+  id: ID!
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 input UserWhereInput {
+  name: StringFilterInput
+}
+
+input CountryWhereInput {
   name: StringFilterInput
 }
 
