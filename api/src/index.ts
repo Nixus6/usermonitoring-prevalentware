@@ -16,7 +16,7 @@ const server = new ApolloServer({
     ({
         orm, user: req.headers['authorization']
     }),
-
+    
 })
 
 server.listen().then(({ url }) => console.log(`server is running on ${url}`));

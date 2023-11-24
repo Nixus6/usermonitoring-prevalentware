@@ -3,7 +3,10 @@ scalar DateTime
 type Query {
   users(skip: Int, take: Int, where: UserWhereInput): [User]!
   user(email: String): User
-  countries(skip: Int, take: Int, where: CountryWhereInput): [Country]
+  countries(skip: Int, take: Int, where: CountryWhereInput): [Country]!
+  usermonitoring(email:String,fechaInicial:DateTime,fechaFinal:DateTime):[UserMonitoring]!
+  usersinmonitoring(fechaInicial:DateTime,fechaFinal:DateTime):[User]!
+  mainUsers(skip: Int, take: Int, monitoreo:String, idCiudad:String, fechaInicial:DateTime, fechaFinal:DateTime):[User]!
 }
 
 interface BaseModel {

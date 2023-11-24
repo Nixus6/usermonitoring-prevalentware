@@ -1,4 +1,4 @@
-import type { User, PrismaClient, Prisma, Session, Country } from '@prisma/client'
+import type { PrismaClient, Prisma, Country } from '@prisma/client'
 
 export type ResolverParent = unknown
 export type ResolverContext = {
